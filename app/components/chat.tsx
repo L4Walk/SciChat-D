@@ -61,6 +61,7 @@ import { useMaskStore } from "../store/mask";
 import { useCommand } from "../command";
 import { prettyObject } from "../utils/format";
 import { ExportMessageModal } from "./exporter";
+import { SetAPIModal } from "./setAPI";
 
 const Markdown = dynamic(async () => (await import("./markdown")).Markdown, {
   loading: () => <LoadingIcon />,
@@ -413,6 +414,7 @@ export function Chat() {
   const config = useAppConfig();
   const fontSize = config.fontSize;
 
+  const [userAPI, setUserAPI] = useState(false);
   const [showExport, setShowExport] = useState(false);
 
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -656,6 +658,8 @@ export function Chat() {
     }
   };
 
+  const setAPI = () => {};
+
   const location = useLocation();
   const isChat = location.pathname === Path.Chat;
   const autoFocus = !isMobileScreen || isChat; // only focus in chat page
@@ -690,6 +694,18 @@ export function Chat() {
               onClick={() => navigate(Path.Home)}
             />
           </div>
+          {/*设置API接口*/}
+          <div className="window-action-button">
+            <IconButton
+              icon={<SettingsIcon />}
+              bordered
+              title={"设置api"}
+              onClick={() => {
+                setUserAPI(true);
+              }}
+            />
+          </div>
+          {/*重命名*/}
           <div className="window-action-button">
             <IconButton
               icon={<RenameIcon />}
@@ -697,6 +713,7 @@ export function Chat() {
               onClick={renameSession}
             />
           </div>
+          {/*导出*/}
           <div className="window-action-button">
             <IconButton
               icon={<ExportIcon />}
@@ -878,6 +895,8 @@ export function Chat() {
           />
         </div>
       </div>
+
+      {userAPI && <SetAPIModal onClose={() => setUserAPI(false)} />}
 
       {showExport && (
         <ExportMessageModal onClose={() => setShowExport(false)} />
