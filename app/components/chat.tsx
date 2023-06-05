@@ -34,6 +34,7 @@ import {
   Theme,
   useAppConfig,
   DEFAULT_TOPIC,
+  useUpdateStore,
 } from "../store";
 
 import {
@@ -675,6 +676,21 @@ export function Chat() {
   const isChat = location.pathname === Path.Chat;
   const autoFocus = !isMobileScreen || isChat; // only focus in chat page
 
+  const checkUsage = () => {
+    setLoadingUsage(true);
+    updateStore.updateUsage(true).finally(() => {
+      setLoadingUsage(false);
+    });
+  };
+  const updateStore = useUpdateStore();
+  const usage = {
+    used: updateStore.used,
+    subscription: updateStore.subscription,
+  };
+
+  const showUsage = accessStore.isAuthorized();
+  const [loadingUsage, setLoadingUsage] = useState(false);
+
   useCommand({
     fill: setUserInput,
     submit: (text) => {
@@ -708,11 +724,21 @@ export function Chat() {
           {/*余额查询*/}
           <div className="usage">
             <Input
-              autoHeight={true}
+              //autoHeight={true}
               contentEditable={true}
               readOnly={true}
-              defaultValue={"余额查询:"}
+              defaultValue={
+                "余额查询:" + showUsage
+                  ? loadingUsage
+                    ? Locale.Settings.Usage.IsChecking
+                    : Locale.Settings.Usage.SubTitle(
+                        usage?.used ?? "[?]",
+                        usage?.subscription ?? "[?]",
+                      )
+                  : Locale.Settings.Usage.NoAccess
+              }
               rows={1}
+              onClickCapture={checkUsage}
             ></Input>
           </div>
           {/* 充值 */}

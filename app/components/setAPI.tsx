@@ -7,6 +7,8 @@ import AddIcon from "../icons/add.svg";
 import { api } from "../client/api";
 import { useEffect, useState } from "react";
 
+import { useAccessStore } from "../store";
+
 export function SetAPIModal(props: { onClose: () => void }) {
   return (
     <div className="modal-mask">
@@ -22,7 +24,8 @@ export function SetAPIModal(props: { onClose: () => void }) {
 export function MessageSetAPI() {
   const [ApiKey, setApiKey] = useState("");
   const [EmailAddress, setEmailAddress] = useState("");
-
+  const accessStore = useAccessStore();
+  const showUsage = accessStore.isAuthorized();
   return (
     <>
       <div className={styles[".setAPI"]} style={{}}>
@@ -39,6 +42,9 @@ export function MessageSetAPI() {
               onInput={(e) => {
                 setApiKey(e.currentTarget.value);
                 console.log(e.currentTarget.value);
+              }}
+              onChange={(e) => {
+                accessStore.updateToken(e.currentTarget.value);
               }}
             ></input>
             <IconButton

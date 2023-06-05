@@ -483,6 +483,7 @@ export function Settings() {
           </ListItem>
         </List>
 
+        {/*
         <List>
           {enabledAccessControl ? (
             <ListItem
@@ -517,6 +518,7 @@ export function Settings() {
               />
             </ListItem>
           ) : null}
+         
 
           <ListItem
             title={Locale.Settings.Usage.Title}
@@ -542,7 +544,7 @@ export function Settings() {
             )}
           </ListItem>
         </List>
-
+         */}
         <List>
           <ListItem
             title={Locale.Settings.Prompt.Disable.Title}
