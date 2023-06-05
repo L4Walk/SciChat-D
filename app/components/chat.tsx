@@ -73,7 +73,6 @@ import { useCommand } from "../command";
 import { prettyObject } from "../utils/format";
 import { ExportMessageModal } from "./exporter";
 import { SetAPIModal } from "./setAPI";
-import { SetAPIModal } from "./setAPI";
 
 const Markdown = dynamic(async () => (await import("./markdown")).Markdown, {
   loading: () => <LoadingIcon />,
