@@ -73,6 +73,7 @@ import { useCommand } from "../command";
 import { prettyObject } from "../utils/format";
 import { ExportMessageModal } from "./exporter";
 import { SetAPIModal } from "./setAPI";
+import { SetAPIModal } from "./setAPI";
 
 const Markdown = dynamic(async () => (await import("./markdown")).Markdown, {
   loading: () => <LoadingIcon />,
@@ -670,6 +671,7 @@ export function Chat() {
   };
 
   const setAPI = () => {};
+
   const location = useLocation();
   const isChat = location.pathname === Path.Chat;
   const autoFocus = !isMobileScreen || isChat; // only focus in chat page
