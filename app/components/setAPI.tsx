@@ -8,6 +8,8 @@ import { api } from "../client/api";
 import { useEffect, useState } from "react";
 
 import { useAccessStore } from "../store";
+import comUtil from "../../common/comUtil";
+import axios from "axios";
 
 export function SetAPIModal(props: { onClose: () => void }) {
   return (
@@ -26,6 +28,38 @@ export function MessageSetAPI() {
   const [EmailAddress, setEmailAddress] = useState("");
   const accessStore = useAccessStore();
   const showUsage = accessStore.isAuthorized();
+
+  const [posts, setPosts] = useState([]);
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
+
+  const ApplyKey = (e: { preventDefault: () => void }) => {
+    if (EmailAddress == "") {
+      return;
+    }
+
+    e.preventDefault();
+    axios
+      .post(comUtil.getHost + "/chat/pub_chat/createAccountByEmail", {
+        title: title,
+        body: body,
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        data: {
+          email: EmailAddress,
+        },
+      })
+      .then((res) => {
+        setPosts((posts) => res.data);
+        setTitle("");
+        setBody("");
+      })
+      .catch((err) => {
+        console.log(posts);
+        console.log(EmailAddress);
+        console.log(err.message);
+      });
+  };
+
   return (
     <>
       <div className={styles[".setAPI"]} style={{}}>
@@ -82,6 +116,7 @@ export function MessageSetAPI() {
               text={"获取Key"}
               onClick={() => {
                 console.log(EmailAddress);
+                ApplyKey;
               }}
               shadow
             />
