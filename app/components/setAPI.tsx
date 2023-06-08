@@ -117,19 +117,20 @@ export function MessageSetAPI() {
           <ListItem title={""}>
             <input
               type="text"
-              value={ApiKey}
+              value={accessStore.token.length == 0 ? "" : accessStore.token}
               onInput={(e) => {
                 setApiKey(e.currentTarget.value);
                 console.log(e.currentTarget.value);
               }}
               onChange={(e) => {
-                accessStore.updateToken(e.currentTarget.value);
+                //accessStore.updateToken(e.currentTarget.value);
               }}
             ></input>
             <IconButton
               icon={<AddIcon />}
               text={"保存Key"}
               onClick={() => {
+                accessStore.updateToken(ApiKey);
                 console.log(ApiKey);
               }}
               shadow
