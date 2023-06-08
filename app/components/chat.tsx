@@ -737,6 +737,7 @@ export function Chat() {
                       )
                   : Locale.Settings.Usage.NoAccess
               }
+              value={"余额："}
               rows={1}
               onClickCapture={checkUsage}
             ></Input>
