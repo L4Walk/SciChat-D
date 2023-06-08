@@ -1,0 +1,52 @@
+.recharge {
+    &-body {
+      margin-top: 20px;
+    }
+
+    .sidebar-bar-button {
+        flex-grow: 1;
+  
+        &:not(:last-child) {
+          margin-right: 10px;
+        }
+      }
+
+    .Key-GetNewKey {
+      display: flex;
+  
+      .email-address {
+        max-width: unset;
+        flex-grow: 1;
+        margin-right: 10px;
+      }
+  
+      .actions {
+        display: flex;
+  
+        button:not(:last-child) {
+          margin-right: 10px;
+        }
+      }
+  
+      @media screen and (max-width: 600px) {
+        flex-direction: column;
+  
+        .email-address {
+          margin-right: 0;
+        }
+  
+        .actions {
+          margin-top: 20px;
+  
+          button {
+            flex-grow: 1;
+          }
+        }
+      }
+    }
+  }
+  
+
+
+  
+ 

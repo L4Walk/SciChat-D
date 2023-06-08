@@ -74,6 +74,7 @@ import { useCommand } from "../command";
 import { prettyObject } from "../utils/format";
 import { ExportMessageModal } from "./exporter";
 import { SetAPIModal } from "./setAPI";
+import { SetRecharge } from "./recharge";
 
 const Markdown = dynamic(async () => (await import("./markdown")).Markdown, {
   loading: () => <LoadingIcon />,
@@ -426,6 +427,7 @@ export function Chat() {
   const config = useAppConfig();
   const fontSize = config.fontSize;
 
+  const [rechargeAPI, setRechargeAPI] = useState(false);
   const [userAPI, setUserAPI] = useState(false);
   const [showExport, setShowExport] = useState(false);
 
@@ -749,7 +751,7 @@ export function Chat() {
               bordered
               title={"充值"}
               onClick={() => {
-                setUserAPI(true);
+                setRechargeAPI(true);
               }}
             />
           </div>
@@ -958,6 +960,7 @@ export function Chat() {
         </div>
       </div>
 
+      {rechargeAPI && <SetRecharge onClose={() => setRechargeAPI(false)} />}
       {userAPI && <SetAPIModal onClose={() => setUserAPI(false)} />}
 
       {showExport && (
