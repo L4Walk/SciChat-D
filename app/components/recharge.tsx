@@ -34,21 +34,65 @@ import SettingsIcon from "../icons/chat-settings.svg";
 import RmbIcon from "../icons/money-rmb.svg";
 import WeChatPay from "../icons/wechat-pay.svg";
 import AliPay from "../icons/ali-pay.svg";
+import { useWindowSize } from "../utils";
 
 export function SetRecharge(props: { onClose: () => void }) {
-  const [money, setMoney] = useState("");
+  const accessStore = useAccessStore();
+  const [price, setPrice] = useState("");
   const [payType, setPayType] = useState("");
   const [orderID, setOrderID] = useState("");
+  const [payUrl, setPayUrl] = useState("");
+  const [payQrUrl, setPayQrUrl] = useState("");
+  const [isShowPayQr, setShowPayQr] = useState("");
+  const [posts, setPosts] = useState([]);
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
 
   function showPayQr(props: {}) {
-    if (money.length == 0 || Number(money) <= 0) {
+    if (price.length == 0 || Number(price) <= 0) {
       return;
     }
 
     setOrderID(comUtil.getGuid());
+    createPayQrCode();
+    setShowPayQr("true");
   }
 
-  function createPayQrCode() {}
+  function createPayQrCode() {
+    axios
+      .post(comUtil.getHost() + "/chat/pub_chat/getPayQrCode", {
+        Headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        data: {
+          pay_type: payType,
+          price: price,
+          order_id: orderID,
+          order_uid: accessStore.token,
+        },
+      })
+      .then((res) => {
+        setPosts((posts) => res.data);
+        if (res.data.status == "ok") {
+          setPayUrl(res.data.info.qr);
+          setPayQrUrl("https://xorpay.com/qr?data=" + payUrl);
+        }
+      })
+      .catch((err) => {
+        console.log("Bug啦");
+        console.log(err.message);
+      });
+  }
+
+  function payOver() {
+    loadPaccount();
+    setPrice("");
+    setPayType("");
+    setOrderID("");
+    window.close();
+  }
+
+  function loadPaccount() {
+    axios;
+  }
 
   return (
     <div className="modal-mask">
@@ -61,7 +105,7 @@ export function SetRecharge(props: { onClose: () => void }) {
               className={styles["sidebar-bar-button"]}
               shadow
               onClick={() => {
-                setMoney("5");
+                setPrice("5");
               }}
             />
 
@@ -71,7 +115,7 @@ export function SetRecharge(props: { onClose: () => void }) {
               className={styles["sidebar-bar-button"]}
               shadow
               onClick={() => {
-                setMoney("10");
+                setPrice("10");
               }}
             />
 
@@ -81,7 +125,7 @@ export function SetRecharge(props: { onClose: () => void }) {
               className={styles["sidebar-bar-button"]}
               shadow
               onClick={() => {
-                setMoney("20");
+                setPrice("20");
               }}
             />
 
@@ -91,7 +135,7 @@ export function SetRecharge(props: { onClose: () => void }) {
               className={styles["sidebar-bar-button"]}
               shadow
               onClick={() => {
-                setMoney("50");
+                setPrice("50");
               }}
             />
 
@@ -101,7 +145,7 @@ export function SetRecharge(props: { onClose: () => void }) {
               className={styles["sidebar-bar-button"]}
               shadow
               onClick={() => {
-                setMoney("100");
+                setPrice("100");
               }}
             />
 
@@ -111,18 +155,30 @@ export function SetRecharge(props: { onClose: () => void }) {
               className={styles["sidebar-bar-button"]}
               shadow
               onClick={() => {
-                setMoney("500");
+                setPrice("500");
               }}
             />
           </ListItem>
 
           <ListItem title="自定义金额">
-            <Input type="text" value={money}></Input>
+            <Input type="text" value={price}></Input>
           </ListItem>
 
           <ListItem title="请选择支付方式">
-            <IconButton icon={<WeChatPay />} text={"微信支付"} />
-            <IconButton icon={<AliPay />} text={"支付宝支付"} />
+            <IconButton
+              icon={<WeChatPay />}
+              text={"微信支付"}
+              onClick={() => {
+                setPayType("native"), showPayQr("native");
+              }}
+            />
+            <IconButton
+              icon={<AliPay />}
+              text={"支付宝支付"}
+              onClick={() => {
+                setPayType("alipay"), showPayQr("alipay");
+              }}
+            />
           </ListItem>
         </List>
       </Modal>
