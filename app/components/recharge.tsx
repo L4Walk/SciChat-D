@@ -38,10 +38,12 @@ import { useWindowSize } from "../utils";
 
 export function SetRecharge(props: { onClose: () => void }) {
   const accessStore = useAccessStore();
+
   const [price, setPrice] = useState("");
   const [payType, setPayType] = useState("");
   const [orderID, setOrderID] = useState("");
   const [payUrl, setPayUrl] = useState("");
+
   const [payQrUrl, setPayQrUrl] = useState("");
   const [isShowPayQr, setShowPayQr] = useState("");
   const [posts, setPosts] = useState([]);
@@ -93,6 +95,35 @@ export function SetRecharge(props: { onClose: () => void }) {
   function loadPaccount() {
     axios;
   }
+
+  /*
+ function ShowQr()
+{
+  return(
+    <>
+      <div className={"recharge"}>
+        <List>
+          <ListItem title="充值金额">
+            <Input type="text" value={"充值金额：" + price}  readOnly={true}></Input>
+          </ListItem>
+          
+          <ListItem title="订单号">
+            <Input type="text" value={"订单号：" + orderID} readOnly={true}></Input>
+          </ListItem>
+
+          <ListItem title="二维码">
+            <image>src="payQrUrl" class="payQrImg"</image>
+            <button title="关闭"></button>
+          </ListItem>
+        </List>
+        </div>
+    </>
+
+  );
+
+ 
+}
+*/
 
   return (
     <div className="modal-mask">
