@@ -36,6 +36,58 @@ import WeChatPay from "../icons/wechat-pay.svg";
 import AliPay from "../icons/ali-pay.svg";
 import { useWindowSize } from "../utils";
 
+function useSteps(
+  steps: Array<{
+    name: string;
+    value: string;
+  }>,
+) {
+  const stepCount = steps.length;
+  const [currentStepIndex, setCurrentStepIndex] = useState(0);
+  const nextStep = () =>
+    setCurrentStepIndex((currentStepIndex + 1) % stepCount);
+  const prevStep = () =>
+    setCurrentStepIndex((currentStepIndex - 1 + stepCount) % stepCount);
+
+  return {
+    currentStepIndex,
+    setCurrentStepIndex,
+    nextStep,
+    prevStep,
+    currentStep: steps[currentStepIndex],
+  };
+}
+
+{
+  /*
+export function Recharge(){
+  const steps = [
+    {
+      name: "设置金额",
+      value: "setPrice",
+    },
+    {
+      name: "获取二维码",
+      value: "setQr",
+    },
+  ];
+
+  const { currentStep, setCurrentStepIndex, currentStepIndex } =
+  useSteps(steps);
+
+  return(
+    <>
+      <div className={"充值额度"} style={currentStep.value !== "setPrice" ? { display: "none" } : {}}>
+
+      
+      </div>
+
+    </>
+  )
+}
+*/
+}
+
 export function SetRecharge(props: { onClose: () => void }) {
   const accessStore = useAccessStore();
 
@@ -96,34 +148,35 @@ export function SetRecharge(props: { onClose: () => void }) {
     axios;
   }
 
-  /*
- function ShowQr()
-{
-  return(
-    <>
-      <div className={"recharge"}>
-        <List>
-          <ListItem title="充值金额">
-            <Input type="text" value={"充值金额：" + price}  readOnly={true}></Input>
-          </ListItem>
-          
-          <ListItem title="订单号">
-            <Input type="text" value={"订单号：" + orderID} readOnly={true}></Input>
-          </ListItem>
+  function ShowQr() {
+    return (
+      <>
+        <div className={"recharge"}>
+          <List>
+            <ListItem title="充值金额">
+              <Input
+                type="text"
+                value={"充值金额：" + price}
+                readOnly={true}
+              ></Input>
+            </ListItem>
 
-          <ListItem title="二维码">
-            <image>src="payQrUrl" class="payQrImg"</image>
-            <button title="关闭"></button>
-          </ListItem>
-        </List>
+            <ListItem title="订单号">
+              <Input
+                type="text"
+                value={"订单号：" + orderID}
+                readOnly={true}
+              ></Input>
+            </ListItem>
+
+            <ListItem title="二维码">
+              <button title="关闭"></button>
+            </ListItem>
+          </List>
         </div>
-    </>
-
-  );
-
- 
-}
-*/
+      </>
+    );
+  }
 
   return (
     <div className="modal-mask">
@@ -200,7 +253,7 @@ export function SetRecharge(props: { onClose: () => void }) {
               icon={<WeChatPay />}
               text={"微信支付"}
               onClick={() => {
-                setPayType("native"), showPayQr("native");
+                ShowQr(), setPayType("native"), showPayQr("native");
               }}
             />
             <IconButton

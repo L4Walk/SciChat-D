@@ -1,5 +1,8 @@
 "use client";
-
+<meta
+  http-equiv="Content-Security-Policy"
+  content="upgrade-insecure-requests"
+></meta>;
 require("../polyfill");
 
 import { useState, useEffect } from "react";
