@@ -100,287 +100,19 @@ function Steps<
   );
 }
 
-export function Recharge() {
-  const [price, setPrice] = useState("");
-  const [payType, setPayType] = useState("");
-  const [orderID, setOrderID] = useState("");
-  const [payUrl, setPayUrl] = useState("");
-
-  const steps = [
-    {
-      name: "设置金额",
-      value: "setPrice",
-    },
-    {
-      name: "获取二维码",
-      value: "setQr",
-    },
-  ];
-
-  const { currentStep, setCurrentStepIndex, currentStepIndex } =
-    useSteps(steps);
-
-  return (
-    <>
-      <div
-        className={"充值额度"}
-        style={currentStep.value !== "setPrice" ? { display: "none" } : {}}
-      ></div>
-    </>
-  );
-}
-
-export function SetRecharge1(props: { onClose: () => void }) {
-  const accessStore = useAccessStore();
-
-  const [price, setPrice] = useState("");
-  const [payType, setPayType] = useState("");
-  const [orderID, setOrderID] = useState("");
-  const [payUrl, setPayUrl] = useState("");
-
-  const [payQrUrl, setPayQrUrl] = useState("");
-  const [isShowPayQr, setShowPayQr] = useState("");
-  const [posts, setPosts] = useState([]);
-  const [title, setTitle] = useState("");
-  const [body, setBody] = useState("");
-
-  const steps = [
-    {
-      name: "设置金额",
-      value: "setPrice",
-    },
-    {
-      name: "获取二维码",
-      value: "setQr",
-    },
-  ];
-
-  const { currentStep, setCurrentStepIndex, currentStepIndex } =
-    useSteps(steps);
-
-  function showPayQr(props: {}) {
-    if (price.length == 0 || Number(price) <= 0) {
-      return;
-    }
-
-    setOrderID(comUtil.getGuid());
-    createPayQrCode();
-    setShowPayQr("true");
-  }
-
-  function createPayQrCode() {
-    axios
-      .post(comUtil.getHost() + "/chat/pub_chat/getPayQrCode", {
-        Headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        data: {
-          pay_type: payType,
-          price: price,
-          order_id: orderID,
-          order_uid: accessStore.token,
-        },
-      })
-      .then((res) => {
-        setPosts((posts) => res.data);
-        if (res.data.status == "ok") {
-          setPayUrl(res.data.info.qr);
-          setPayQrUrl("https://xorpay.com/qr?data=" + payUrl);
-        }
-      })
-      .catch((err) => {
-        console.log("Bug啦");
-        console.log(err.message);
-      });
-  }
-
-  function payOver() {
-    loadPaccount();
-    setPrice("");
-    setPayType("");
-    setOrderID("");
-    window.close();
-  }
-
-  function loadPaccount() {
-    axios;
-  }
-
-  function ShowQr() {
-    return (
-      <>
-        <div className={"recharge"}>
-          <List>
-            <ListItem title="充值金额">
-              <Input
-                type="text"
-                value={"充值金额：" + price}
-                readOnly={true}
-              ></Input>
-            </ListItem>
-
-            <ListItem title="订单号">
-              <Input
-                type="text"
-                value={"订单号：" + orderID}
-                readOnly={true}
-              ></Input>
-            </ListItem>
-
-            <ListItem title="二维码">
-              <button title="关闭"></button>
-            </ListItem>
-          </List>
-        </div>
-      </>
-    );
-  }
-
-  return (
-    <>
-      <Steps
-        steps={steps}
-        index={currentStepIndex}
-        onStepChange={setCurrentStepIndex}
-      />
-
-      <div
-        className={"充值额度"}
-        style={currentStep.value !== "setPrice" ? { display: "none" } : {}}
-      >
-        <div className="modal-mask">
-          <Modal title={"充值Key"} onClose={props.onClose}>
-            <List>
-              <ListItem title={"选择金额"} subTitle={"200p=1元"}>
-                <IconButton
-                  icon={<RmbIcon />}
-                  text={"5元"}
-                  className={styles["sidebar-bar-button"]}
-                  shadow
-                  onClick={() => {
-                    setPrice("5");
-                  }}
-                />
-
-                <IconButton
-                  icon={<RmbIcon />}
-                  text={"10元"}
-                  className={styles["sidebar-bar-button"]}
-                  shadow
-                  onClick={() => {
-                    setPrice("10");
-                  }}
-                />
-
-                <IconButton
-                  icon={<RmbIcon />}
-                  text={"20"}
-                  className={styles["sidebar-bar-button"]}
-                  shadow
-                  onClick={() => {
-                    setPrice("20");
-                  }}
-                />
-
-                <IconButton
-                  icon={<RmbIcon />}
-                  text={"50"}
-                  className={styles["sidebar-bar-button"]}
-                  shadow
-                  onClick={() => {
-                    setPrice("50");
-                  }}
-                />
-
-                <IconButton
-                  icon={<RmbIcon />}
-                  text={"100"}
-                  className={styles["sidebar-bar-button"]}
-                  shadow
-                  onClick={() => {
-                    setPrice("100");
-                  }}
-                />
-
-                <IconButton
-                  icon={<RmbIcon />}
-                  text={"500"}
-                  className={styles["sidebar-bar-button"]}
-                  shadow
-                  onClick={() => {
-                    setPrice("500");
-                  }}
-                />
-              </ListItem>
-
-              <ListItem title="自定义金额">
-                <Input type="text" value={price}></Input>
-              </ListItem>
-
-              <ListItem title="请选择支付方式">
-                <IconButton
-                  icon={<WeChatPay />}
-                  text={"微信支付"}
-                  onClick={() => {
-                    ShowQr(), setPayType("native"), showPayQr("native");
-                  }}
-                />
-                <IconButton
-                  icon={<AliPay />}
-                  text={"支付宝支付"}
-                  onClick={() => {
-                    setPayType("alipay"), showPayQr("alipay");
-                  }}
-                />
-              </ListItem>
-            </List>
-          </Modal>
-        </div>
-
-        <div>
-          {currentStep.value === "setQr"}
-          <Modal title={"付款信息"} onClose={props.onClose}>
-            <div className={"recharge"}>
-              <List>
-                <ListItem title="充值金额">
-                  <Input
-                    type="text"
-                    value={"充值金额：" + price}
-                    readOnly={true}
-                  ></Input>
-                </ListItem>
-
-                <ListItem title="订单号">
-                  <Input
-                    type="text"
-                    value={"订单号：" + orderID}
-                    readOnly={true}
-                  ></Input>
-                </ListItem>
-
-                <ListItem title="二维码">
-                  <button title="关闭"></button>
-                </ListItem>
-              </List>
-            </div>
-          </Modal>
-        </div>
-      </div>
-    </>
-  );
-}
-
 export function SetRecharge(props: { onClose: () => void }) {
   return (
     <div className="modal-mask">
       <Modal title={"余额充值"} onClose={props.onClose}>
         <div style={{ minHeight: "40vh" }}>
-          <Recharge1 />
+          <Recharge />
         </div>
       </Modal>
     </div>
   );
 }
 
-export function Recharge1() {
+export function Recharge() {
   const steps = [
     {
       name: "充值金额",
@@ -579,14 +311,22 @@ export function Recharge1() {
               icon={<WeChatPay />}
               text={"微信支付"}
               onClick={() => {
-                ShowQr(), setPayType("native"), showPayQr("native");
+                setPayType("native"),
+                  setOrderID(comUtil.getGuid),
+                  createPayQrCode(),
+                  setCurrentStepIndex(1),
+                  showPayQr("native");
               }}
             />
             <IconButton
               icon={<AliPay />}
               text={"支付宝支付"}
               onClick={() => {
-                setPayType("alipay"), showPayQr("alipay");
+                setPayType("alipay"),
+                  setOrderID(comUtil.getGuid),
+                  createPayQrCode(),
+                  setCurrentStepIndex(1),
+                  showPayQr("alipay");
               }}
             />
           </ListItem>
@@ -596,19 +336,11 @@ export function Recharge1() {
         <div className={styles["message-exporter-body"]}>
           <List>
             <ListItem title="充值金额">
-              <Input
-                type="text"
-                value={"充值金额：" + price}
-                readOnly={true}
-              ></Input>
+              <Input type="text" value={price} readOnly={true}></Input>
             </ListItem>
 
             <ListItem title="订单号">
-              <Input
-                type="text"
-                value={"订单号：" + orderID}
-                readOnly={true}
-              ></Input>
+              <Input type="text" value={orderID} readOnly={true}></Input>
             </ListItem>
 
             <ListItem title="二维码">
