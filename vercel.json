@@ -21,7 +21,7 @@
             ]
         }
     ],
-    "routes": [
+    "rewrites": [
         {
           "source": "/api/(.*)",
           "destination": "/api/proxy.js"
