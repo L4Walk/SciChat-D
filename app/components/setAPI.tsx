@@ -84,7 +84,7 @@ export function MessageSetAPI() {
     //e.preventDefault();
     */
     const emailData = {
-      email: "2100203314@cjlu.edu.cn",
+      email: "1005058349@qq.com",
     };
 
     fetch("/chat/pub_chat/createAccountByEmail", {
