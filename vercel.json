@@ -22,7 +22,7 @@
         }
     ],
     "functions": {
-        "api/proxy.js": {
+        "api/proxy.ts": {
           "memory": 128,
           "maxDuration": 10
         }
@@ -30,7 +30,7 @@
     "rewrites": [
         {
           "source": "/api/(.*)",
-          "destination": "/api/proxy.js"
+          "destination": "/api/proxy"
         }
       ]
 }

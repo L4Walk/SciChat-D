@@ -1,4 +1,4 @@
-{
+{/*
 const fetch = require('node-fetch');
 
 module.exports = async(req, res) => {
@@ -18,7 +18,12 @@ module.exports = async(req, res) => {
      // 返回目标服务器的响应
     res.status(response.status).send(await response.text());
 }
-}
+*/}
+
+
+
+
+
 {
 /*
 const { createProxyMiddleware } = require('http-proxy-middleware')
