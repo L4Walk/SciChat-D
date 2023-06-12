@@ -87,7 +87,7 @@ export function MessageSetAPI() {
       email: "l4walk@chuheng.tech",
     };
 
-    fetch("/chat/pub_chat/createAccountByEmail", {
+    fetch("/proxy/createProxyMiddleware", {
       method: "POST",
       body: JSON.stringify(emailData),
       headers: { "Content-Type": "application/x-www-form-urlencoded" },

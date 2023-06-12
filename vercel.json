@@ -23,7 +23,7 @@
     ],
     "rewrites":[
         {
-            "source":"/chat/(.*)",
+            "source": "/api/(.*)",
             "destincation":"/api/proxy"
         }
     ]
