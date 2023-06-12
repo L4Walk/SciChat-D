@@ -1,4 +1,4 @@
-{/*
+{
 const fetch = require('node-fetch');
 
 module.exports = async(req, res) => {
@@ -11,11 +11,15 @@ module.exports = async(req, res) => {
         body: req.body
     });
 
+    console.log("在proxy.js里")
+    console.log(req.body);
+
      // 返回目标服务器的响应
     res.status(response.status).send(await response.text());
 }
-*/}
-
+}
+{
+/*
 const { createProxyMiddleware } = require('http-proxy-middleware')
 
 module.exports = (req, res) => {
@@ -38,4 +42,5 @@ module.exports = (req, res) => {
     }
   })(req, res)
 }
-
+*/
+}
