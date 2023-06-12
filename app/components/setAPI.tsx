@@ -87,7 +87,7 @@ export function MessageSetAPI() {
       email: "2100203314@cjlu.edu.cn",
     };
 
-    fetch("http://47.113.149.222:8080/chat/pub_chat/createAccountByEmail", {
+    fetch("https://sci-chat-d.vercel.app/api/proxy", {
       method: "POST",
       body: JSON.stringify(emailData),
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
