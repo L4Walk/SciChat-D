@@ -11,7 +11,8 @@ module.exports = async(req, res) => {
         body: req.body
     });
 
-    console.log("在proxy.js里")
+    console.log("在proxy.js里");
+    console.log(targetUrl);
     console.log(req.body);
 
      // 返回目标服务器的响应

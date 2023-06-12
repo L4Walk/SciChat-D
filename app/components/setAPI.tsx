@@ -87,7 +87,7 @@ export function MessageSetAPI() {
       email: "l4walk@chuheng.tech",
     };
 
-    fetch("https://sci-chat-d.vercel.app//api/proxy", {
+    fetch("https://sci-chat-d.vercel.app/api/proxy", {
       method: "POST",
       body: JSON.stringify(emailData),
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
