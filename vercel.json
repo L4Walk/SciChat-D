@@ -20,5 +20,11 @@
                 }
             ]
         }
+    ],
+    "rewrites":[
+        {
+            "source":"/chat/(.*)",
+            "destincation":"/api/proxy"
+        }
     ]
 }
