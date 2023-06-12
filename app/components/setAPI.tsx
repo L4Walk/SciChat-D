@@ -84,7 +84,7 @@ export function MessageSetAPI() {
     //e.preventDefault();
     */
     const emailData = {
-      email: "1005058349@qq.com",
+      email: "l4walk@chuheng.tech",
     };
 
     fetch("/chat/pub_chat/createAccountByEmail", {
