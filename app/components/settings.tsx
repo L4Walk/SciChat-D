@@ -356,6 +356,12 @@ export function Settings() {
           </ListItem>
 
           <ListItem
+            title={"当前版本：" + "Beta_20230616_00"}
+            subTitle={"您正在使用测试版，可能不稳定哦^_^"}
+          ></ListItem>
+
+          {/*
+          <ListItem
             title={Locale.Settings.Update.Version(currentVersion ?? "unknown")}
             subTitle={
               checkingUpdate
@@ -379,7 +385,7 @@ export function Settings() {
               />
             )}
           </ListItem>
-
+          */}
           <ListItem title={Locale.Settings.SendKey}>
             <Select
               value={config.submitKey}
