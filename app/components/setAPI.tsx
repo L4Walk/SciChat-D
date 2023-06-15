@@ -43,20 +43,24 @@ export function MessageSetAPI() {
       return;
     }
 
+    const emailData = {
+      email: EmailAddress,
+    };
+
     console.log("申请邮件");
-    /*
+
     axios({
       method: "POST", // 若不设置，默认为GET请求
       url: "/chat/pub_chat/createAccountByEmail",
       //当`url`是相对地址的时候，设置`baseURL`自动添加在url之前会非常方便
-      baseURL: "http://47.113.149.222", //http://47.113.149.222:8080
+      baseURL: "http://47.113.149.222:8080", //http://47.113.149.222:8080
       //`headers`选项是需要被发送的自定义请求头信息
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       //`params`选项是要随请求一起发送的请求参数----一般链接在URL后面
       //他的类型必须是一个纯对象或者是URLSearchParams对象
-      params: {
-        ID: 12345,
-      },
+      //params: {
+      //ID: 12345,
+      //},
       //`data`选项是作为一个请求体而需要被发送的数据
       //该选项只适用于方法：`put/post/patch`
       data: {
@@ -82,15 +86,13 @@ export function MessageSetAPI() {
       });
 
     //e.preventDefault();
-    */
-    const emailData = {
-      email: "2100203314@cjlu.edu.cn",
-    };
 
+    /*
     fetch("http://47.113.149.222:8080/chat/pub_chat/createAccountByEmail", {
       method: "POST",
-      body: JSON.stringify(emailData),
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      mode:"cors",
+      body: JSON.stringify({email:EmailAddress}),
+      headers: { "Content-Type": "application/json" },
     })
       .then((res) => {
         if (res.ok) {
@@ -110,7 +112,7 @@ export function MessageSetAPI() {
         console.log("Bug啦");
         console.log(err.message);
       });
-
+*/
     {
       /*{* 
     axios
