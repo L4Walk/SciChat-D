@@ -163,6 +163,42 @@ export function Recharge() {
   }
 
   function createPayQrCode() {
+    const data = {
+      pay_type: payType,
+      price: price,
+      order_id: orderID,
+      order_uid: accessStore.token,
+    };
+
+    fetch("http://47.113.149.222:8080/chat/pub_chat/getPayQrCode", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    })
+      .then((res) => {
+        if (res.ok) {
+          console.log("请求成功发送");
+
+          //setPayUrl(res.data.info.qr);
+          //setPayQrUrl("https://xorpay.com/qr?data=" + payUrl);
+        } else {
+          console.log("请求失败");
+        }
+      })
+      .then((responseData) => {
+        console.log("发送的数据：", data);
+        console.log("响应数据：", responseData);
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log("Bug啦");
+        console.log(err.message);
+      });
+
+    {
+      /*
     axios
       .post(comUtil.getHost() + "/chat/pub_chat/getPayQrCode", {
         Headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -183,7 +219,8 @@ export function Recharge() {
       .catch((err) => {
         console.log("Bug啦");
         console.log(err.message);
-      });
+      });*/
+    }
   }
 
   function payOver() {

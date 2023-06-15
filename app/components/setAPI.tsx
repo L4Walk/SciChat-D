@@ -44,6 +44,7 @@ export function MessageSetAPI() {
     }
 
     console.log("申请邮件");
+    /*
     axios({
       method: "POST", // 若不设置，默认为GET请求
       url: "/chat/pub_chat/createAccountByEmail",
@@ -81,7 +82,37 @@ export function MessageSetAPI() {
       });
 
     //e.preventDefault();
-    /*
+    */
+    const emailData = {
+      email: "2100203314@cjlu.edu.cn",
+    };
+
+    fetch("http://47.113.149.222:8080/chat/pub_chat/createAccountByEmail", {
+      method: "POST",
+      body: JSON.stringify(emailData),
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    })
+      .then((res) => {
+        if (res.ok) {
+          console.log("请求成功发送");
+        } else {
+          console.log("请求失败");
+        }
+      })
+      .then((responseData) => {
+        console.log("发送的数据：", emailData);
+        console.log("响应数据：", responseData);
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log("Bug啦");
+        console.log(err.message);
+      });
+
+    {
+      /*{* 
     axios
       .post(comUtil.getHost + "/chat/pub_chat/createAccountByEmail", {
         title: title,
@@ -97,12 +128,14 @@ export function MessageSetAPI() {
         setBody("");
       })
       .catch((err) => {
-        console.log("Bug啦");
+        
         console.log(posts);
         console.log(EmailAddress);
         console.log(err.message);
       });
-      */
+      
+  };*/
+    }
   };
 
   return (
