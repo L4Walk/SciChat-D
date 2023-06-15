@@ -152,17 +152,17 @@ export function Recharge() {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
 
-  function showPayQr(props: {}) {
+  function showPayQr() {
     if (price.length == 0 || Number(price) <= 0) {
       return;
     }
 
     setOrderID(comUtil.getGuid());
-    createPayQrCode();
+    createPayQrCode(payType, price, orderID);
     setShowPayQr("true");
   }
 
-  function createPayQrCode() {
+  function createPayQrCode(payType: string, price: string, orderID: string) {
     const data = {
       pay_type: payType,
       price: price,
@@ -170,57 +170,34 @@ export function Recharge() {
       order_uid: accessStore.token,
     };
 
-    fetch("http://47.113.149.222:8080/chat/pub_chat/getPayQrCode", {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    })
-      .then((res) => {
-        if (res.ok) {
-          console.log("请求成功发送");
-
-          //setPayUrl(res.data.info.qr);
-          //setPayQrUrl("https://xorpay.com/qr?data=" + payUrl);
-        } else {
-          console.log("请求失败");
-        }
-      })
-      .then((responseData) => {
-        console.log("发送的数据：", data);
-        console.log("响应数据：", responseData);
-      })
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((err) => {
-        console.log("Bug啦");
-        console.log(err.message);
-      });
-
-    {
-      /*
-    axios
-      .post(comUtil.getHost() + "/chat/pub_chat/getPayQrCode", {
-        Headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        data: {
-          pay_type: payType,
-          price: price,
-          order_id: orderID,
-          order_uid: accessStore.token,
-        },
-      })
-      .then((res) => {
-        setPosts((posts) => res.data);
-        if (res.data.status == "ok") {
-          setPayUrl(res.data.info.qr);
-          setPayQrUrl("https://xorpay.com/qr?data=" + payUrl);
-        }
-      })
-      .catch((err) => {
-        console.log("Bug啦");
-        console.log(err.message);
-      });*/
+    if (
+      "" == data.pay_type ||
+      "" == data.price ||
+      "" == data.order_id ||
+      "" == data.order_uid
+    ) {
+      console.log("信息有误");
+      setCurrentStepIndex(0);
+      return;
     }
+
+    axios
+      .post("http://47.113.149.222:8080/chat/pub_chat/getPayQrCode", data, {
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      })
+      .then(function (response) {
+        //console.log("发送数据:");
+        //console.log(data);
+        console.log(response);
+        if (response.statusText == "OK") {
+          var payUrl = response.data.info.qr;
+          setPayQrUrl("https://xorpay.com/qr?data=" + payUrl);
+          console.log("二维码:" + payQrUrl);
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   }
 
   function payOver() {
@@ -348,22 +325,22 @@ export function Recharge() {
               icon={<WeChatPay />}
               text={"微信支付"}
               onClick={() => {
-                setPayType("native"),
-                  setOrderID(comUtil.getGuid),
-                  createPayQrCode(),
-                  setCurrentStepIndex(1),
-                  showPayQr("native");
+                setPayType("native");
+                setOrderID(comUtil.getGuid);
+                createPayQrCode("native", price, comUtil.getGuid());
+                setCurrentStepIndex(1);
+                //showPayQr("native");
               }}
             />
             <IconButton
               icon={<AliPay />}
               text={"支付宝支付"}
               onClick={() => {
-                setPayType("alipay"),
-                  setOrderID(comUtil.getGuid),
-                  createPayQrCode(),
-                  setCurrentStepIndex(1),
-                  showPayQr("alipay");
+                setPayType("alipay");
+                setOrderID(comUtil.getGuid);
+                createPayQrCode("alipay", price, comUtil.getGuid());
+                setCurrentStepIndex(1);
+                //showPayQr("alipay");
               }}
             />
           </ListItem>
@@ -380,8 +357,16 @@ export function Recharge() {
               <Input type="text" value={orderID} readOnly={true}></Input>
             </ListItem>
 
+            <ListItem title="支付类型">
+              <Input
+                type="text"
+                value={payType == "native" ? "微信支付" : "支付宝支付"}
+                readOnly={true}
+              ></Input>
+            </ListItem>
+
             <ListItem title="二维码">
-              <button title="关闭"></button>
+              <img src={payQrUrl} />
             </ListItem>
           </List>
         </div>

@@ -58,9 +58,9 @@ export function MessageSetAPI() {
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       //`params`选项是要随请求一起发送的请求参数----一般链接在URL后面
       //他的类型必须是一个纯对象或者是URLSearchParams对象
-      //params: {
-      //ID: 12345,
-      //},
+      params: {
+        //ID: 12345,
+      },
       //`data`选项是作为一个请求体而需要被发送的数据
       //该选项只适用于方法：`put/post/patch`
       data: {
@@ -72,8 +72,9 @@ export function MessageSetAPI() {
       //`withCredentails`选项表明了是否是跨域请求,默认是false
       withCredentials: true, //default,
       //返回数据的格式
+
       //其可选项是arraybuffer,blob,document,json,text,stream
-      responseType: "json", //default
+      responseType: "text", //default
     })
       .then((res) => {
         setPosts((posts) => res.data);
@@ -84,60 +85,6 @@ export function MessageSetAPI() {
         console.log(EmailAddress);
         console.log(err.message);
       });
-
-    //e.preventDefault();
-
-    /*
-    fetch("http://47.113.149.222:8080/chat/pub_chat/createAccountByEmail", {
-      method: "POST",
-      mode:"cors",
-      body: JSON.stringify({email:EmailAddress}),
-      headers: { "Content-Type": "application/json" },
-    })
-      .then((res) => {
-        if (res.ok) {
-          console.log("请求成功发送");
-        } else {
-          console.log("请求失败");
-        }
-      })
-      .then((responseData) => {
-        console.log("发送的数据：", emailData);
-        console.log("响应数据：", responseData);
-      })
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((err) => {
-        console.log("Bug啦");
-        console.log(err.message);
-      });
-*/
-    {
-      /*{* 
-    axios
-      .post(comUtil.getHost + "/chat/pub_chat/createAccountByEmail", {
-        title: title,
-        body: body,
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        data: {
-          email: EmailAddress,
-        },
-      })
-      .then((res) => {
-        setPosts((posts) => res.data);
-        setTitle("");
-        setBody("");
-      })
-      .catch((err) => {
-        
-        console.log(posts);
-        console.log(EmailAddress);
-        console.log(err.message);
-      });
-      
-  };*/
-    }
   };
 
   return (
