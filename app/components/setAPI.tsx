@@ -5,7 +5,7 @@
 import Locale from "../locales";
 
 import styles from "./setAPI.module.scss";
-import { List, ListItem, Modal, Select, showToast } from "./ui-lib";
+import { Input, List, ListItem, Modal, Select, showToast } from "./ui-lib";
 import { IconButton } from "./button";
 import AddIcon from "../icons/add.svg";
 import { api } from "../client/api";
@@ -15,6 +15,7 @@ import { useAccessStore } from "../store";
 import comUtil from "../../common/comUtil";
 import axios from "axios";
 import { Console } from "console";
+import { Value } from "sass";
 
 export function SetAPIModal(props: { onClose: () => void }) {
   return (
@@ -97,17 +98,15 @@ export function MessageSetAPI() {
           ></ListItem>
 
           <ListItem title={""}>
-            <input
+            <Input
               type="text"
-              value={accessStore.token.length == 0 ? "" : accessStore.token}
+              value={accessStore.token}
+              rows={1}
               onInput={(e) => {
                 setApiKey(e.currentTarget.value);
-                console.log(e.currentTarget.value);
+                accessStore.updateToken(ApiKey);
               }}
-              onChange={(e) => {
-                //accessStore.updateToken(e.currentTarget.value);
-              }}
-            ></input>
+            ></Input>
             <IconButton
               icon={<AddIcon />}
               text={"保存Key"}
@@ -131,14 +130,15 @@ export function MessageSetAPI() {
           ></ListItem>
 
           <ListItem title={""}>
-            <input
+            <Input
               type="text"
               value={EmailAddress}
+              rows={1}
               onInput={(e) => {
                 setEmailAddress(e.currentTarget.value);
-                console.log(e.currentTarget.value);
+                //console.log(e.currentTarget.value);
               }}
-            ></input>
+            ></Input>
             <IconButton
               icon={<AddIcon />}
               text={"获取Key"}

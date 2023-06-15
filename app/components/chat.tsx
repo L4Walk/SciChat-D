@@ -76,6 +76,10 @@ import { ExportMessageModal } from "./exporter";
 import { SetAPIModal } from "./setAPI";
 import { SetRecharge } from "./recharge";
 
+import axios from "axios";
+import comUtil from "../../common/comUtil";
+import { auth } from "../api/auth";
+
 const Markdown = dynamic(async () => (await import("./markdown")).Markdown, {
   loading: () => <LoadingIcon />,
 });
@@ -678,6 +682,27 @@ export function Chat() {
   const isChat = location.pathname === Path.Chat;
   const autoFocus = !isMobileScreen || isChat; // only focus in chat page
 
+  const [paccount, setPaccount] = useState("");
+  const loadPaccount = () => {
+    //console.log("Key:" + accessStore.token)
+    fetch(comUtil.getApiHost() + "/dashboard/billing/credit_grants", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessStore.token}`,
+      },
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((res) => {
+        setPaccount(res["total_available"]);
+        //console.log("余额:" + paccount);
+        //console.log(res)
+      })
+      .catch((e) => console.log("err:", e));
+  };
+
   const checkUsage = () => {
     setLoadingUsage(true);
     updateStore.updateUsage(true).finally(() => {
@@ -729,6 +754,9 @@ export function Chat() {
               //autoHeight={true}
               contentEditable={true}
               readOnly={true}
+              defaultValue={"余额：" + paccount + "P"}
+              /*
+
               defaultValue={
                 "余额查询:" + showUsage
                   ? loadingUsage
@@ -739,9 +767,11 @@ export function Chat() {
                       )
                   : Locale.Settings.Usage.NoAccess
               }
-              value={"余额："}
+              */
+
+              value={"余额：" + paccount + " P"}
               rows={1}
-              onClickCapture={checkUsage}
+              onClickCapture={loadPaccount}
             ></Input>
           </div>
           {/* 充值 */}
@@ -955,12 +985,22 @@ export function Chat() {
             text={Locale.Chat.Send}
             className={styles["chat-input-send"]}
             type="primary"
-            onClick={() => doSubmit(userInput)}
+            onClick={() => {
+              doSubmit(userInput);
+              loadPaccount();
+            }}
           />
         </div>
       </div>
 
-      {rechargeAPI && <SetRecharge onClose={() => setRechargeAPI(false)} />}
+      {rechargeAPI && (
+        <SetRecharge
+          onClose={() => {
+            setRechargeAPI(false);
+            loadPaccount();
+          }}
+        />
+      )}
       {userAPI && <SetAPIModal onClose={() => setUserAPI(false)} />}
 
       {showExport && (

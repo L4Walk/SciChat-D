@@ -182,7 +182,7 @@ export function Recharge() {
     }
 
     axios
-      .post("http://47.113.149.222:8080/chat/pub_chat/getPayQrCode", data, {
+      .post(comUtil.getHost() + "/chat/pub_chat/getPayQrCode", data, {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
       })
       .then(function (response) {
@@ -317,7 +317,13 @@ export function Recharge() {
           </ListItem>
 
           <ListItem title="自定义金额">
-            <Input type="text" value={price}></Input>
+            <Input
+              type="text"
+              value={price}
+              onInput={(e) => {
+                setPrice(e.currentTarget.value);
+              }}
+            ></Input>
           </ListItem>
 
           <ListItem title="请选择支付方式">

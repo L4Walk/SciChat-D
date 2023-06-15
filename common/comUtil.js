@@ -8,10 +8,11 @@ function getApiHost(){
 }
 
 
-function getHeader(){
+function getHeader(userkey){
 	return {
 		"Content-Type": "application/json",
-		"Authorization": "Bearer " + uni.getStorageSync('UserKey') //自定义请求头信息
+		//"Authorization": "Bearer " + uni.getStorageSync('UserKey') //自定义请求头信息
+		"Authorization": "Bearer " + userkey //自定义请求头信息
 	};
 }
 
