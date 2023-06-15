@@ -262,6 +262,7 @@ export function Recharge() {
               shadow
               onClick={() => {
                 setPrice("5");
+                setPayQrUrl("");
               }}
             />
 
@@ -272,6 +273,7 @@ export function Recharge() {
               shadow
               onClick={() => {
                 setPrice("10");
+                setPayQrUrl("");
               }}
             />
 
@@ -282,6 +284,7 @@ export function Recharge() {
               shadow
               onClick={() => {
                 setPrice("20");
+                setPayQrUrl("");
               }}
             />
 
@@ -292,6 +295,7 @@ export function Recharge() {
               shadow
               onClick={() => {
                 setPrice("50");
+                setPayQrUrl("");
               }}
             />
 
@@ -302,6 +306,7 @@ export function Recharge() {
               shadow
               onClick={() => {
                 setPrice("100");
+                setPayQrUrl("");
               }}
             />
 
@@ -312,6 +317,7 @@ export function Recharge() {
               shadow
               onClick={() => {
                 setPrice("500");
+                setPayQrUrl("");
               }}
             />
           </ListItem>
@@ -322,6 +328,7 @@ export function Recharge() {
               value={price}
               onInput={(e) => {
                 setPrice(e.currentTarget.value);
+                setPayQrUrl("");
               }}
             ></Input>
           </ListItem>
@@ -331,6 +338,7 @@ export function Recharge() {
               icon={<WeChatPay />}
               text={"微信支付"}
               onClick={() => {
+                setPayQrUrl("");
                 setPayType("native");
                 setOrderID(comUtil.getGuid);
                 createPayQrCode("native", price, comUtil.getGuid());
@@ -342,6 +350,7 @@ export function Recharge() {
               icon={<AliPay />}
               text={"支付宝支付"}
               onClick={() => {
+                setPayQrUrl("");
                 setPayType("alipay");
                 setOrderID(comUtil.getGuid);
                 createPayQrCode("alipay", price, comUtil.getGuid());
@@ -371,7 +380,10 @@ export function Recharge() {
               ></Input>
             </ListItem>
 
-            <ListItem title="二维码">
+            <ListItem
+              title="支付二维码"
+              subTitle={payQrUrl ? "" : "二维码生成中，请耐心等待！"}
+            >
               <img src={payQrUrl} />
             </ListItem>
           </List>

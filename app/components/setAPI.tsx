@@ -38,9 +38,11 @@ export function MessageSetAPI() {
   const [posts, setPosts] = useState([]);
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
+  const [msg, setMsg] = useState("");
 
   const ApplyKey = () => {
-    if (EmailAddress == "") {
+    if (EmailAddress == "" || !EmailAddress.indexOf("@")) {
+      setMsg("请输入正确的邮箱地址！");
       return;
     }
 
@@ -50,6 +52,27 @@ export function MessageSetAPI() {
 
     console.log("申请邮件");
 
+    axios
+      .post(
+        comUtil.getHost() + "/chat/pub_chat/createAccountByEmail",
+        emailData,
+        {
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        },
+      )
+      .then((res) => {
+        setPosts((posts) => res.data);
+        setMsg("申请成功，KEY已发送到您的邮箱，请进入邮箱查看");
+      })
+      .catch((err) => {
+        console.log("Bug啦");
+        console.log(posts);
+        console.log(EmailAddress);
+        console.log(err.message);
+      });
+
+    {
+      /*
     axios({
       method: "POST", // 若不设置，默认为GET请求
       url: "/chat/pub_chat/createAccountByEmail",
@@ -69,7 +92,7 @@ export function MessageSetAPI() {
       },
       //`timeout`选项定义了请求发出的延迟毫秒数
       //如果请求花费的时间超过延迟的时间，那么请求会被终止
-      timeout: 1000,
+  
       //`withCredentails`选项表明了是否是跨域请求,默认是false
       withCredentials: true, //default,
       //返回数据的格式
@@ -85,42 +108,57 @@ export function MessageSetAPI() {
         console.log(posts);
         console.log(EmailAddress);
         console.log(err.message);
-      });
+      });*/
+    }
   };
 
   return (
     <>
-      <div className={styles[".setAPI"]} style={{}}>
+      <div className={styles["setAPI"]} style={{}}>
         <List>
           <ListItem
             title={"请输入您的key"}
             subTitle={"请妥善保管您的key！"}
           ></ListItem>
 
-          <ListItem title={""}>
+          <div className={styles["filter-item"] + " " + styles["key-filter"]}>
+            <div className={styles["actions"]}>
+              <IconButton text={""} className={styles["filter-item"]} />
+            </div>
+
             <Input
               type="text"
-              value={accessStore.token}
+              placeholder={
+                accessStore.token
+                  ? `已设置key：${accessStore.token}`
+                  : "请输入key"
+              }
+              //defaultValue={accessStore.token ? accessStore.token : ""}
               rows={1}
+              className={styles["input-bar"]}
               onInput={(e) => {
                 setApiKey(e.currentTarget.value);
-                accessStore.updateToken(ApiKey);
+                //accessStore.updateToken(ApiKey);
               }}
             ></Input>
-            <IconButton
-              icon={<AddIcon />}
-              text={"保存Key"}
-              onClick={() => {
-                accessStore.updateToken(ApiKey);
-                console.log(ApiKey);
-              }}
-              shadow
-            />
-          </ListItem>
+
+            <div className={styles["actions"]}>
+              <IconButton
+                icon={<AddIcon />}
+                text={"保存Key"}
+                className={styles["filter-item"]}
+                onClick={() => {
+                  accessStore.updateToken(ApiKey);
+                  console.log(ApiKey);
+                }}
+                shadow
+              />
+            </div>
+          </div>
         </List>
       </div>
 
-      <div className="getKey">
+      <div className={styles["setAPI"]} style={{}}>
         <List>
           <ListItem
             title={"申请新Key"}
@@ -129,26 +167,41 @@ export function MessageSetAPI() {
             }
           ></ListItem>
 
-          <ListItem title={""}>
+          <div className={styles["filter-item"] + " " + styles["key-filter"]}>
+            <div className={styles["actions"]}>
+              <IconButton text={""} className={styles["filter-item"]} />
+            </div>
+
             <Input
               type="text"
+              placeholder={"请输入邮箱地址"}
               value={EmailAddress}
               rows={1}
+              className={styles["input-bar"]}
               onInput={(e) => {
                 setEmailAddress(e.currentTarget.value);
-                //console.log(e.currentTarget.value);
               }}
             ></Input>
-            <IconButton
-              icon={<AddIcon />}
-              text={"获取Key"}
-              onClick={() => {
-                ApplyKey();
-                console.log(EmailAddress);
-              }}
-              shadow
-            />
-          </ListItem>
+
+            <div className={styles["actions"]}>
+              <IconButton
+                icon={<AddIcon />}
+                text={"获取Key"}
+                className={styles["filter-item"]}
+                onClick={() => {
+                  ApplyKey();
+                  console.log(EmailAddress);
+                }}
+                shadow
+              />
+            </div>
+          </div>
+        </List>
+      </div>
+
+      <div className={styles["setAPI"]}>
+        <List>
+          <ListItem title={`消息提示：${msg}`}></ListItem>
         </List>
       </div>
     </>
