@@ -11,6 +11,7 @@ import CloseIcon from "../icons/close.svg";
 import MaskIcon from "../icons/mask.svg";
 import PluginIcon from "../icons/plugin.svg";
 import ChatLogo from "../icons/Chatbot.svg";
+import EmialIcon from "../icons/email.svg";
 
 import Locale from "../locales";
 
@@ -22,6 +23,7 @@ import {
   NARROW_SIDEBAR_WIDTH,
   Path,
   REPO_URL,
+  MailMe,
 } from "../constant";
 
 import { Link, useNavigate } from "react-router-dom";
@@ -175,8 +177,8 @@ export function SideBar(props: { className?: string }) {
             </Link>
           </div>
           <div className={styles["sidebar-action"]}>
-            <a href={REPO_URL} target="_blank">
-              <IconButton icon={<GithubIcon />} shadow />
+            <a href={MailMe} target="_blank">
+              <IconButton icon={<EmialIcon />} text={"意见反馈"} shadow />
             </a>
           </div>
         </div>

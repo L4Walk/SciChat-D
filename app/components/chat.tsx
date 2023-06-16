@@ -685,6 +685,7 @@ export function Chat() {
   const [paccount, setPaccount] = useState("");
   const loadPaccount = () => {
     //console.log("Key:" + accessStore.token)
+
     fetch(comUtil.getApiHost() + "/dashboard/billing/credit_grants", {
       method: "POST",
       headers: {
@@ -725,7 +726,9 @@ export function Chat() {
     },
   });
 
-  loadPaccount();
+  //setPaccount("[?]");
+
+  //loadPaccount();
 
   return (
     <div className={styles.chat} key={session.id}>
@@ -756,7 +759,7 @@ export function Chat() {
               //autoHeight={true}
               contentEditable={true}
               readOnly={true}
-              defaultValue={"余额：" + paccount + "P"}
+              defaultValue={"余额：P"}
               /*
 
               defaultValue={
@@ -779,8 +782,9 @@ export function Chat() {
           {/* 充值 */}
           <div className="recharge">
             <IconButton
-              icon={<AddIcon />}
+              //icon={<AddIcon />}
               bordered
+              text={"充值"}
               title={"充值"}
               onClick={() => {
                 setRechargeAPI(true);
@@ -791,8 +795,9 @@ export function Chat() {
           {/*设置API接口*/}
           <div className="window-action-button">
             <IconButton
-              icon={<SettingsIcon />}
+              //icon={<SettingsIcon />}
               bordered
+              text={"设置Key"}
               title={"设置key"}
               onClick={() => {
                 setUserAPI(true);
@@ -989,7 +994,7 @@ export function Chat() {
             type="primary"
             onClick={() => {
               doSubmit(userInput);
-              loadPaccount();
+              //loadPaccount();
             }}
           />
         </div>

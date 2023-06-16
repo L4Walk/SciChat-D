@@ -34,6 +34,7 @@ import SettingsIcon from "../icons/chat-settings.svg";
 import RmbIcon from "../icons/money-rmb.svg";
 import WeChatPay from "../icons/wechat-pay.svg";
 import AliPay from "../icons/ali-pay.svg";
+import Load from "../icons/load.svg";
 import { useWindowSize } from "../utils";
 
 function useSteps(
@@ -364,6 +365,7 @@ export function Recharge() {
       {currentStep.value === "showQr" && (
         <div className={styles["message-exporter-body"]}>
           <List>
+            {/* 
             <ListItem title="充值金额">
               <Input type="text" value={price} readOnly={true}></Input>
             </ListItem>
@@ -379,12 +381,20 @@ export function Recharge() {
                 readOnly={true}
               ></Input>
             </ListItem>
-
+            */}
             <ListItem
               title="支付二维码"
               subTitle={payQrUrl ? "" : "二维码生成中，请耐心等待！"}
             >
-              <img src={payQrUrl} />
+              <img
+                width={200}
+                height={200}
+                src={
+                  payQrUrl
+                    ? payQrUrl
+                    : "https://www.iyunying.org/wp-content/uploads/2016/09/f2f52ab95f230a30e27e46bfffb5419c.gif"
+                }
+              />
             </ListItem>
           </List>
         </div>
