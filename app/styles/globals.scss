@@ -44,17 +44,17 @@
   }
 }
 
-@mixin rice {
-  --theme: rice;
+@mixin ocean {
+  --theme: ocean;
 
   /* color */
-  --white: yellow;
-  --black: rgb(48, 48, 48);
-  --gray: rgb(250, 250, 250);
-  --primary: rgb(29, 147, 171);
-  --second: rgb(231, 248, 255);
-  --hover-color: #e2df13;
-  --bar-color: rgba(197, 171, 21, 0.1);
+  --white: #c8d6e5; //主要底色
+  --black: #222f3e;  // 字体颜色
+  --gray: #c8d6e5fb;  // 全屏外部底色
+  --primary: #6980c5;  // 选择框边边颜色 | 选项颜色
+  --second: #2e86de;  // 侧边栏主要颜色
+  --hover-color: #f3f3f3;
+  --bar-color: rgba(0, 0, 0, 0.1);
   --theme-color: var(--gray);
 
   /* shadow */
@@ -62,7 +62,7 @@
   --card-shadow: 0px 2px 4px 0px rgb(0, 0, 0, 0.05);
 
   /* stroke */
-  --border-in-light: 1px solid rgb(222, 222, 222);
+  --border-in-light: 1px solid rgb(35, 118, 183);  // 边框线条
 }
 
 .light {
@@ -72,10 +72,10 @@
 .dark {
   @include dark;
 }
-
-.rice {
-  @include rice;
+.ocean{
+  @include ocean;
 }
+
 
 .mask {
   filter: invert(0.8);

@@ -14,7 +14,7 @@ export enum Theme {
   Auto = "auto",
   Dark = "dark",
   Light = "light",
-  Rice = "rice",
+  Ocean = "ocean",
 }
 
 export const DEFAULT_CONFIG = {

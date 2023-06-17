@@ -58,17 +58,14 @@ export function useSwitchTheme() {
   useEffect(() => {
     document.body.classList.remove("light");
     document.body.classList.remove("dark");
-    document.body.classList.remove("rice");
+    document.body.classList.remove("ocean");
 
     if (config.theme === "dark") {
       document.body.classList.add("dark");
-      document.body.classList.add("rice");
     } else if (config.theme === "light") {
       document.body.classList.add("light");
-      document.body.classList.add("rice");
-    } else if (config.theme === "rice") {
-      document.body.classList.add("light");
-      document.body.classList.add("dark");
+    } else if (config.theme === "ocean") {
+      document.body.classList.add("ocean");
     }
 
     const metaDescriptionDark = document.querySelector(
@@ -77,18 +74,19 @@ export function useSwitchTheme() {
     const metaDescriptionLight = document.querySelector(
       'meta[name="theme-color"][media*="light"]',
     );
-    const metaDescriptionRice = document.querySelector(
+    const metaDescriptionOcean = document.querySelector(
       'meta[name="theme-color"][media*="rice"]',
     );
 
     if (config.theme === "auto") {
       metaDescriptionDark?.setAttribute("content", "#151515");
       metaDescriptionLight?.setAttribute("content", "#fafafa");
+      metaDescriptionOcean?.setAttribute("content", "#0080FF");
     } else {
       const themeColor = getCSSVar("--theme-color");
       metaDescriptionDark?.setAttribute("content", themeColor);
       metaDescriptionLight?.setAttribute("content", themeColor);
-      metaDescriptionRice?.setAttribute("content", themeColor);
+      metaDescriptionOcean?.setAttribute("content", themeColor);
     }
   }, [config.theme]);
 }

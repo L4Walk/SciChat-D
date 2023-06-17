@@ -19,6 +19,7 @@ import BreakIcon from "../icons/break.svg";
 import SettingsIcon from "../icons/chat-settings.svg";
 import SetIcon from "../icons/set.svg";
 
+import OceanIcon from "../icons/ocean.svg";
 import LightIcon from "../icons/light.svg";
 import DarkIcon from "../icons/dark.svg";
 import AutoIcon from "../icons/auto.svg";
@@ -335,7 +336,7 @@ export function ChatActions(props: {
   // switch themes
   const theme = config.theme;
   function nextTheme() {
-    const themes = [Theme.Auto, Theme.Light, Theme.Dark];
+    const themes = [Theme.Auto, Theme.Light, Theme.Dark, Theme.Ocean];
     const themeIndex = themes.indexOf(theme);
     const nextIndex = (themeIndex + 1) % themes.length;
     const nextTheme = themes[nextIndex];
@@ -385,6 +386,8 @@ export function ChatActions(props: {
           <LightIcon />
         ) : theme === Theme.Dark ? (
           <DarkIcon />
+        ) : theme === Theme.Ocean ? (
+          <OceanIcon />
         ) : null}
       </div>
 
