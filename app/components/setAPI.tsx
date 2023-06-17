@@ -129,7 +129,7 @@ export function MessageSetAPI() {
             <Input
               type="text"
               placeholder={
-                accessStore.token
+                accessStore.token.length != 0
                   ? `已设置key：${accessStore.token}`
                   : "请输入key"
               }
@@ -144,12 +144,22 @@ export function MessageSetAPI() {
 
             <div className={styles["actions"]}>
               <IconButton
-                icon={<AddIcon />}
                 text={"保存Key"}
                 className={styles["filter-item"]}
                 onClick={() => {
                   accessStore.updateToken(ApiKey);
                   console.log(ApiKey);
+                }}
+                shadow
+              />
+            </div>
+
+            <div className={styles["actions"]}>
+              <IconButton
+                text={"复制Key"}
+                className={styles["filter-item"]}
+                onClick={() => {
+                  setMsg(`您的Key是：${accessStore.token}`);
                 }}
                 shadow
               />
@@ -185,7 +195,6 @@ export function MessageSetAPI() {
 
             <div className={styles["actions"]}>
               <IconButton
-                icon={<AddIcon />}
                 text={"获取Key"}
                 className={styles["filter-item"]}
                 onClick={() => {
@@ -201,7 +210,14 @@ export function MessageSetAPI() {
 
       <div className={styles["setAPI"]}>
         <List>
-          <ListItem title={`消息提示：${msg}`}></ListItem>
+          <ListItem title={"消息提示"}></ListItem>
+          <div className={styles["filter-item"] + " " + styles["key-filter"]}>
+            <Input
+              type="text"
+              value={msg}
+              className={styles["input-bar"]}
+            ></Input>
+          </div>
         </List>
       </div>
     </>

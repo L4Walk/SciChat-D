@@ -17,7 +17,7 @@ export const metadata = {
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#fafafa" },
     { media: "(prefers-color-scheme: dark)", color: "#151515" },
-    { media: "(prefers-color-scheme: rice)", color: "#151515" },
+    { media: "(prefers-color-scheme: rice)", color: "#232323" },
   ],
   appleWebApp: {
     title: "SciChat",

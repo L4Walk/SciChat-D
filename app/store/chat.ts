@@ -12,12 +12,16 @@ import { api, RequestMessage } from "../client/api";
 import { ChatControllerPool } from "../client/controller";
 import { prettyObject } from "../utils/format";
 
+import comUtil from "../../common/comUtil";
+import { useAccessStore } from "../store";
+
 export type ChatMessage = RequestMessage & {
   date: string;
   streaming?: boolean;
   isError?: boolean;
   id?: number;
   model?: ModelType;
+  paccount?: string;
 };
 
 export function createMessage(override: Partial<ChatMessage>): ChatMessage {
@@ -26,6 +30,7 @@ export function createMessage(override: Partial<ChatMessage>): ChatMessage {
     date: new Date().toLocaleString(),
     role: "user",
     content: "",
+    paccount: "",
     ...override,
   };
 }
@@ -46,7 +51,6 @@ export interface ChatSession {
   lastUpdate: number;
   lastSummarizeIndex: number;
   clearContextIndex?: number;
-
   mask: Mask;
 }
 

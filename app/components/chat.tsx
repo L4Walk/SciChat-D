@@ -17,6 +17,7 @@ import MinIcon from "../icons/min.svg";
 import ResetIcon from "../icons/reload.svg";
 import BreakIcon from "../icons/break.svg";
 import SettingsIcon from "../icons/chat-settings.svg";
+import SetIcon from "../icons/set.svg";
 
 import LightIcon from "../icons/light.svg";
 import DarkIcon from "../icons/dark.svg";
@@ -367,14 +368,16 @@ export function ChatActions(props: {
         <div
           className={`${chatStyle["chat-input-action"]} clickable`}
           onClick={props.showPromptModal}
+          title={"Prompt设置"}
         >
-          <SettingsIcon />
+          <SetIcon />
         </div>
       )}
 
       <div
         className={`${chatStyle["chat-input-action"]} clickable`}
         onClick={nextTheme}
+        title={"主题设置"}
       >
         {theme === Theme.Auto ? (
           <AutoIcon />
@@ -388,6 +391,7 @@ export function ChatActions(props: {
       <div
         className={`${chatStyle["chat-input-action"]} clickable`}
         onClick={props.showPromptHints}
+        title={"提示词帮助"}
       >
         <PromptIcon />
       </div>
@@ -397,6 +401,7 @@ export function ChatActions(props: {
         onClick={() => {
           navigate(Path.Masks);
         }}
+        title={"面具选择"}
       >
         <MaskIcon />
       </div>
@@ -413,6 +418,7 @@ export function ChatActions(props: {
             }
           });
         }}
+        title={"清除上下文链接"}
       >
         <BreakIcon />
       </div>
@@ -514,17 +520,22 @@ export function Chat() {
     setPromptHints([]);
     if (!isMobileScreen) inputRef.current?.focus();
     setAutoScroll(true);
+
+    setTimeout(loadPaccount, 8888);
   };
 
   // stop response
   const onUserStop = (messageId: number) => {
     ChatControllerPool.stop(sessionIndex, messageId);
+    loadPaccount();
   };
 
   useEffect(() => {
     chatStore.updateCurrentSession((session) => {
+      loadPaccount();
       const stopTiming = Date.now() - REQUEST_TIMEOUT_MS;
       session.messages.forEach((m) => {
+        //loadPaccount();
         // check if should stop all stale messages
         if (m.isError || new Date(m.date).getTime() < stopTiming) {
           if (m.streaming) {
@@ -729,7 +740,6 @@ export function Chat() {
   //setPaccount("[?]");
 
   //loadPaccount();
-
   return (
     <div className={styles.chat} key={session.id}>
       <div className="window-header">
@@ -994,7 +1004,6 @@ export function Chat() {
             type="primary"
             onClick={() => {
               doSubmit(userInput);
-              //loadPaccount();
             }}
           />
         </div>
@@ -1008,7 +1017,13 @@ export function Chat() {
           }}
         />
       )}
-      {userAPI && <SetAPIModal onClose={() => setUserAPI(false)} />}
+      {userAPI && (
+        <SetAPIModal
+          onClose={() => {
+            setUserAPI(false);
+          }}
+        />
+      )}
 
       {showExport && (
         <ExportMessageModal onClose={() => setShowExport(false)} />

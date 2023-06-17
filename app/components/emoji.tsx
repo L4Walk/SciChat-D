@@ -8,6 +8,9 @@ import { ModelType } from "../store";
 
 import BotIcon from "../icons/bot.svg";
 import BlackBotIcon from "../icons/black-bot.svg";
+import YellowBotIcon from "../icons/chatbot-y.svg";
+import ChatBot32Icon from "../icons/chatbot-32.svg";
+import ChatBot64Icon from "../icons/chatbot-64.svg";
 
 export function getEmojiUrl(unified: string, style: EmojiStyle) {
   return `https://cdn.staticfile.org/emoji-datasource-apple/14.0.0/img/${style}/64/${unified}.png`;
@@ -35,7 +38,7 @@ export function Avatar(props: { model?: ModelType; avatar?: string }) {
         {props.model?.startsWith("gpt-4") ? (
           <BlackBotIcon className="user-avatar" />
         ) : (
-          <BotIcon className="user-avatar" />
+          <ChatBot32Icon className="user-avatar" />
         )}
       </div>
     );
