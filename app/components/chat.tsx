@@ -745,7 +745,7 @@ export function Chat() {
   const showUsage = accessStore.isAuthorized();
   const [loadingUsage, setLoadingUsage] = useState(false);
 
-  const [showFooter, setShowFooter] = useState(true);
+  const [showFooter, setShowFooter] = useState(false);
 
   useCommand({
     fill: setUserInput,
@@ -757,10 +757,129 @@ export function Chat() {
   //setPaccount("[?]");
 
   //loadPaccount();
+
+  const NavButton = () => {
+    const divRef = useRef<HTMLDivElement>(null);
+    const [isSmall, setIsSmall] = useState(false);
+
+    useEffect(() => {
+      const handleResize = () => {
+        if (divRef.current && divRef.current?.offsetWidth < 300) {
+          setIsSmall(true);
+        } else {
+          setIsSmall(false);
+        }
+      };
+
+      window.addEventListener("resize", handleResize);
+
+      // 在组件卸载时清除事件监听器
+      return () => {
+        window.removeEventListener("resize", handleResize);
+      };
+    }, []);
+
+    return (
+      <div ref={divRef} className={isSmall ? "small" : "normal"}>
+        <ul
+          id="navbar"
+          //className={this.state.clicked ? "navbar active" : "navbar"}
+        >
+          {/* 充值 */}
+          <li>
+            <IconButton
+              //icon={<AddIcon />}
+              bordered
+              text={"余额充值"}
+              title={"余额充值"}
+              onClick={() => {
+                setRechargeAPI(true);
+              }}
+            />
+          </li>
+
+          {/*设置API接口*/}
+          <li>
+            <IconButton
+              //icon={<SettingsIcon />}
+              bordered
+              text={"设置Key"}
+              title={"设置key"}
+              onClick={() => {
+                setUserAPI(true);
+              }}
+            />
+          </li>
+
+          {/*重命名*/}
+          <li>
+            <IconButton
+              //icon={<RenameIcon />}
+              bordered
+              text={"更改标题"}
+              title={"重命名对话标题"}
+              onClick={renameSession}
+            />
+          </li>
+
+          {/*导出*/}
+          <li>
+            <IconButton
+              //icon={<ExportIcon />}
+              bordered
+              text={"导出记录"}
+              title={Locale.Chat.Actions.Export}
+              onClick={() => {
+                setShowExport(true);
+              }}
+            />
+          </li>
+
+          {/* 全屏 */}
+          <li>
+            {!isMobileScreen && (
+              <IconButton
+                icon={config.tightBorder ? <MinIcon /> : <MaxIcon />}
+                bordered
+                title={"全屏"}
+                onClick={() => {
+                  config.update(
+                    (config) => (config.tightBorder = !config.tightBorder),
+                  );
+                  setShowFooter(config.tightBorder ? true : false);
+                }}
+              />
+            )}
+          </li>
+
+          {/*余额查询*/}
+          <li></li>
+        </ul>
+      </div>
+    );
+  };
+
   class NavBar extends Component {
-    state = { clicked: false };
+    state = { clicked: false, isSmall: false };
     handleClick = () => {
       this.setState({ clicked: !this.state.clicked });
+    };
+
+    componentDidMount() {
+      window.addEventListener("resize", this.handleResize);
+      this.handleResize();
+    }
+
+    componentWillUnmount() {
+      window.removeEventListener("resize", this.handleResize);
+    }
+
+    handleResize = () => {
+      if ((window.innerWidth as number) < 300) {
+        this.setState({ isSmall: true });
+      } else {
+        this.setState({ isSmall: false });
+      }
     };
 
     render() {
@@ -772,16 +891,13 @@ export function Chat() {
                 id="navbar"
                 className={this.state.clicked ? "navbar active" : "navbar"}
               >
-                {/*余额查询*/}
-                <li></li>
-
                 {/* 充值 */}
                 <li>
                   <IconButton
                     //icon={<AddIcon />}
                     bordered
-                    text={"充值"}
-                    title={"充值"}
+                    text={"余额充值"}
+                    title={"余额充值"}
                     onClick={() => {
                       setRechargeAPI(true);
                     }}
@@ -804,9 +920,10 @@ export function Chat() {
                 {/*重命名*/}
                 <li>
                   <IconButton
-                    icon={<RenameIcon />}
+                    //icon={<RenameIcon />}
                     bordered
-                    title={"重命名对话"}
+                    text={"更改标题"}
+                    title={"重命名对话标题"}
                     onClick={renameSession}
                   />
                 </li>
@@ -814,8 +931,9 @@ export function Chat() {
                 {/*导出*/}
                 <li>
                   <IconButton
-                    icon={<ExportIcon />}
+                    //icon={<ExportIcon />}
                     bordered
+                    text={"导出记录"}
                     title={Locale.Chat.Actions.Export}
                     onClick={() => {
                       setShowExport(true);
@@ -840,10 +958,17 @@ export function Chat() {
                     />
                   )}
                 </li>
+
+                {/*余额查询*/}
+                <li></li>
               </ul>
             </div>
 
-            <div className={navStyle["mobile"]} onClick={this.handleClick}>
+            <div
+              id="mobile"
+              className={navStyle["mobile"]}
+              onClick={this.handleClick}
+            >
               <IconButton
                 icon={this.state.clicked ? <NavbarXIcon /> : <NavbarIcon />}
               />
@@ -884,16 +1009,50 @@ export function Chat() {
           />
         </div>
 
-        <Input
-          //autoHeight={true}
-          contentEditable={true}
-          readOnly={true}
-          value={"余额：" + paccount}
-          rows={1}
-          onClickCapture={loadPaccount}
-        ></Input>
+        <div className={"window-action-button"}>
+          <Input
+            //autoHeight={true}
+            contentEditable={true}
+            readOnly={true}
+            value={"余额：" + paccount}
+            rows={1}
+            onClickCapture={loadPaccount}
+          ></Input>
+        </div>
 
-        <NavBar />
+        <div className={"window-action-button"}>
+          <NavBar />
+        </div>
+
+        {/**
+        <div className="window-actions">
+          <div className={"window-action-button" + " " + styles.mobile}>
+            <IconButton
+              icon={<ReturnIcon />}
+              bordered
+              title={Locale.Chat.Actions.ChatList}
+              onClick={() => navigate(Path.Home)}
+            />
+          </div>
+
+
+          <div className={"window-action-button"}>
+            <Input
+              //autoHeight={true}
+              contentEditable={true}
+              readOnly={true}
+              value={"余额：" + paccount}
+              rows={1}
+              onClickCapture={loadPaccount}
+            ></Input>
+          </div>
+
+          <div className={"window-action-button"}>
+            <NavBar />
+          </div>
+         
+        </div>
+        */}
       </div>
 
       <div

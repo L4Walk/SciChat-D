@@ -10,6 +10,7 @@ import LoadingIcon from "../icons/three-dots.svg";
 import ChatGptIcon from "../icons/chatgpt.png";
 import ShareIcon from "../icons/share.svg";
 import BotIcon from "../icons/bot.png";
+import SciChatIcon from "../icons/chatbot-32.svg";
 
 import DownloadIcon from "../icons/download.svg";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -345,7 +346,7 @@ function ExportAvatar(props: { avatar: string }) {
   if (props.avatar === DEFAULT_MASK_AVATAR) {
     return (
       <NextImage
-        src={BotIcon.src}
+        src={SciChatIcon.src}
         width={30}
         height={30}
         alt="bot"
@@ -429,7 +430,7 @@ export function ImagePreviewer(props: {
         <div className={styles["chat-info"]}>
           <div className={styles["logo"] + " no-dark"}>
             <NextImage
-              src={ChatGptIcon.src}
+              src={SciChatIcon.src}
               alt="logo"
               width={50}
               height={50}

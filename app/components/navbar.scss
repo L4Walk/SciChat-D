@@ -1,3 +1,71 @@
+nav{
+  display:flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#navbar{
+  display: flex;
+  align-items: center;
+  justify-self: center;
+}
+
+#navbar ul{
+display: flex;
+}
+
+#navbar li{
+  list-style: none;
+  padding:0 20px;
+  position: relative;
+  flex-grow: 1;
+  flex:1;
+}
+
+#mobile {
+  display: none;
+}
+
+#mobile i{
+  align-items: center;
+}
+
+@media screen and (max-width:900px){
+  #navbar{
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-self: flex-start;
+      position: fixed;
+      top: 80px;
+      right: -600px;
+      width: 125px;
+      height: 25vh;
+      z-index: 9999;
+      transition: 0.3s ease-in-out;
+      background-color: var(--primary);
+      border-radius: 10px;
+      padding: 10px;
+      opacity: 0.9;
+  }
+
+  #navbar.active{
+      right: 0px;
+  }
+
+  #navbar li{
+      margin-bottom: 25px;
+flex-grow: 1;
+  }
+
+  #mobile{
+      display: block;
+  }
+
+  
+}
+
+/*
 nav {
     display: flex;
     align-items: center;
@@ -8,10 +76,16 @@ nav {
       align-items: center;
       justify-self: center;
   
+      ul{
+        display: flex;
+      }
+
       li {
         list-style: none;
         padding: 0 20px;
         position: relative;
+        flex-grow: 1;
+        flex:1;
       }
     }
   
@@ -23,7 +97,7 @@ nav {
       }
     }
   
-    @media screen and (max-width: 600px) {
+    @media screen and (max-width: 400px) {
       .navbar {
         display: flex;
         flex-direction: column;
@@ -32,20 +106,23 @@ nav {
         position: fixed;
         top: 80px;
         right: -600px;
-        width: 200px;
-        height: 40vh;
+        width: 125px;
+        height: 25vh;
         z-index: 9999;
         transition: 0.3s ease-in-out;
+
         background-color: var(--primary);
         border-radius: 10px;
         padding: 10px;
+        opacity: 0.9;
   
         &.active {
-          right: 0px;
+          right: 1px;
         }
   
-        li {
-          margin-bottom: 25px;
+        .li {
+          margin-bottom: 15px;
+          flex-grow: 1;
         }
       }
   
@@ -54,4 +131,5 @@ nav {
       }
     }
   }
+  */
   

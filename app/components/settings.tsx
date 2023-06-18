@@ -356,8 +356,8 @@ export function Settings() {
           </ListItem>
 
           <ListItem
-            title={"当前版本：" + "Beta_20230616_00"}
-            subTitle={"您正在使用测试版，可能不稳定哦^_^"}
+            title={"当前版本：" + "V0.0.2"}
+            subTitle={"欢迎您使用内测版，可能不稳定哦^_^"}
           ></ListItem>
 
           {/*
