@@ -1,0 +1,24 @@
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 2;
+    text-align: center;
+  
+    p {
+      margin: 0;
+    }
+
+    a {
+        user-select: none;
+      }
+      
+  }
+  
+  .footer-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  

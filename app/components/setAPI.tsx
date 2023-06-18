@@ -148,7 +148,9 @@ export function MessageSetAPI() {
                 className={styles["filter-item"]}
                 onClick={() => {
                   accessStore.updateToken(ApiKey);
-                  console.log(ApiKey);
+                  setMsg("已成功设置Key：" + ApiKey);
+
+                  //console.log(ApiKey);
                 }}
                 shadow
               />

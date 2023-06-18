@@ -10,9 +10,12 @@ import { useState, useEffect } from "react";
 import styles from "./home.module.scss";
 
 import BotIcon from "../icons/bot.svg";
+import ChatBotIcon from "../icons/chatbot-32.svg";
 import LoadingIcon from "../icons/three-dots.svg";
 
 import { getCSSVar, useMobileScreen } from "../utils";
+
+import Footer from "./footer";
 
 import dynamic from "next/dynamic";
 import { Path, SlotID } from "../constant";
@@ -30,7 +33,7 @@ import { useAppConfig } from "../store/config";
 export function Loading(props: { noLogo?: boolean }) {
   return (
     <div className={styles["loading-content"] + " no-dark"}>
-      {!props.noLogo && <BotIcon />}
+      {!props.noLogo && <ChatBotIcon />}
       <LoadingIcon />
     </div>
   );

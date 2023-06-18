@@ -12,6 +12,7 @@ import MaskIcon from "../icons/mask.svg";
 import PluginIcon from "../icons/plugin.svg";
 import ChatLogo from "../icons/Chatbot.svg";
 import EmialIcon from "../icons/email.svg";
+import BeianIcon from "../icons/beian.svg";
 
 import Locale from "../locales";
 
@@ -198,7 +199,6 @@ export function SideBar(props: { className?: string }) {
           />
         </div>
       </div>
-
       <div
         className={styles["sidebar-drag"]}
         onMouseDown={(e) => onDragMouseDown(e as any)}

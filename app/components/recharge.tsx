@@ -310,17 +310,6 @@ export function Recharge() {
                 setPayQrUrl("");
               }}
             />
-
-            <IconButton
-              icon={<RmbIcon />}
-              text={"500"}
-              className={styles["sidebar-bar-button"]}
-              shadow
-              onClick={() => {
-                setPrice("500");
-                setPayQrUrl("");
-              }}
-            />
           </ListItem>
 
           <ListItem title="自定义金额">

@@ -1,5 +1,5 @@
 import { useDebouncedCallback } from "use-debounce";
-import { useState, useRef, useEffect, useLayoutEffect } from "react";
+import { useState, useRef, useEffect, useLayoutEffect, Component } from "react";
 import ReactTooltip from "react-tooltip";
 
 import AddIcon from "../icons/add.svg";
@@ -25,6 +25,8 @@ import DarkIcon from "../icons/dark.svg";
 import AutoIcon from "../icons/auto.svg";
 import BottomIcon from "../icons/bottom.svg";
 import StopIcon from "../icons/pause.svg";
+import NavbarIcon from "../icons/navbar.svg";
+import NavbarXIcon from "../icons/navbar-X.svg";
 
 import {
   ChatMessage,
@@ -58,6 +60,7 @@ import Locale from "../locales";
 import { IconButton } from "./button";
 import styles from "./home.module.scss";
 import chatStyle from "./chat.module.scss";
+import navStyle from "./navbar.scss";
 import {
   Input,
   List,
@@ -77,6 +80,7 @@ import { prettyObject } from "../utils/format";
 import { ExportMessageModal } from "./exporter";
 import { SetAPIModal } from "./setAPI";
 import { SetRecharge } from "./recharge";
+import Footer from "./footer";
 
 import axios from "axios";
 import comUtil from "../../common/comUtil";
@@ -711,11 +715,19 @@ export function Chat() {
         return res.json();
       })
       .then((res) => {
-        setPaccount(res["total_available"]);
+        if (res["object"] === "credit_summary") {
+          setPaccount(res["total_available"] + " P");
+        } else {
+          setPaccount("[请先设置Key!]");
+        }
+
         //console.log("余额:" + paccount);
         //console.log(res)
       })
-      .catch((e) => console.log("err:", e));
+      .catch((e) => {
+        setPaccount("[?]");
+        console.log("err:", e);
+      });
   };
 
   const checkUsage = () => {
@@ -733,6 +745,8 @@ export function Chat() {
   const showUsage = accessStore.isAuthorized();
   const [loadingUsage, setLoadingUsage] = useState(false);
 
+  const [showFooter, setShowFooter] = useState(true);
+
   useCommand({
     fill: setUserInput,
     submit: (text) => {
@@ -743,6 +757,109 @@ export function Chat() {
   //setPaccount("[?]");
 
   //loadPaccount();
+  class NavBar extends Component {
+    state = { clicked: false };
+    handleClick = () => {
+      this.setState({ clicked: !this.state.clicked });
+    };
+
+    render() {
+      return (
+        <>
+          <nav>
+            <div>
+              <ul
+                id="navbar"
+                className={this.state.clicked ? "navbar active" : "navbar"}
+              >
+                {/*余额查询*/}
+                <li></li>
+
+                {/* 充值 */}
+                <li>
+                  <IconButton
+                    //icon={<AddIcon />}
+                    bordered
+                    text={"充值"}
+                    title={"充值"}
+                    onClick={() => {
+                      setRechargeAPI(true);
+                    }}
+                  />
+                </li>
+
+                {/*设置API接口*/}
+                <li>
+                  <IconButton
+                    //icon={<SettingsIcon />}
+                    bordered
+                    text={"设置Key"}
+                    title={"设置key"}
+                    onClick={() => {
+                      setUserAPI(true);
+                    }}
+                  />
+                </li>
+
+                {/*重命名*/}
+                <li>
+                  <IconButton
+                    icon={<RenameIcon />}
+                    bordered
+                    title={"重命名对话"}
+                    onClick={renameSession}
+                  />
+                </li>
+
+                {/*导出*/}
+                <li>
+                  <IconButton
+                    icon={<ExportIcon />}
+                    bordered
+                    title={Locale.Chat.Actions.Export}
+                    onClick={() => {
+                      setShowExport(true);
+                    }}
+                  />
+                </li>
+
+                {/* 全屏 */}
+                <li>
+                  {!isMobileScreen && (
+                    <IconButton
+                      icon={config.tightBorder ? <MinIcon /> : <MaxIcon />}
+                      bordered
+                      title={"全屏"}
+                      onClick={() => {
+                        config.update(
+                          (config) =>
+                            (config.tightBorder = !config.tightBorder),
+                        );
+                        setShowFooter(config.tightBorder ? true : false);
+                      }}
+                    />
+                  )}
+                </li>
+              </ul>
+            </div>
+
+            <div className={navStyle["mobile"]} onClick={this.handleClick}>
+              <IconButton
+                icon={this.state.clicked ? <NavbarXIcon /> : <NavbarIcon />}
+              />
+            </div>
+
+            <PromptToast
+              showToast={!hitBottom}
+              showModal={showPromptModal}
+              setShowModal={setShowPromptModal}
+            />
+          </nav>
+        </>
+      );
+    }
+  }
+
   return (
     <div className={styles.chat} key={session.id}>
       <div className="window-header">
@@ -757,107 +874,26 @@ export function Chat() {
             {Locale.Chat.SubTitle(session.messages.length)}
           </div>
         </div>
-        <div className="window-actions">
-          <div className={"window-action-button" + " " + styles.mobile}>
-            <IconButton
-              icon={<ReturnIcon />}
-              bordered
-              title={Locale.Chat.Actions.ChatList}
-              onClick={() => navigate(Path.Home)}
-            />
-          </div>
-          {/*余额查询*/}
-          <div className="usage">
-            <Input
-              //autoHeight={true}
-              contentEditable={true}
-              readOnly={true}
-              defaultValue={"余额：P"}
-              /*
 
-              defaultValue={
-                "余额查询:" + showUsage
-                  ? loadingUsage
-                    ? Locale.Settings.Usage.IsChecking
-                    : Locale.Settings.Usage.SubTitle(
-                        usage?.used ?? "[?]",
-                        usage?.subscription ?? "[?]",
-                      )
-                  : Locale.Settings.Usage.NoAccess
-              }
-              */
-
-              value={"余额：" + paccount + " P"}
-              rows={1}
-              onClickCapture={loadPaccount}
-            ></Input>
-          </div>
-          {/* 充值 */}
-          <div className="recharge">
-            <IconButton
-              //icon={<AddIcon />}
-              bordered
-              text={"充值"}
-              title={"充值"}
-              onClick={() => {
-                setRechargeAPI(true);
-              }}
-            />
-          </div>
-
-          {/*设置API接口*/}
-          <div className="window-action-button">
-            <IconButton
-              //icon={<SettingsIcon />}
-              bordered
-              text={"设置Key"}
-              title={"设置key"}
-              onClick={() => {
-                setUserAPI(true);
-              }}
-            />
-          </div>
-          {/*重命名*/}
-          <div className="window-action-button">
-            <IconButton
-              icon={<RenameIcon />}
-              bordered
-              title={"重命名对话"}
-              onClick={renameSession}
-            />
-          </div>
-          {/*导出*/}
-          <div className="window-action-button">
-            <IconButton
-              icon={<ExportIcon />}
-              bordered
-              title={Locale.Chat.Actions.Export}
-              onClick={() => {
-                setShowExport(true);
-              }}
-            />
-          </div>
-          {!isMobileScreen && (
-            <div className="window-action-button">
-              <IconButton
-                icon={config.tightBorder ? <MinIcon /> : <MaxIcon />}
-                bordered
-                title={"全屏"}
-                onClick={() => {
-                  config.update(
-                    (config) => (config.tightBorder = !config.tightBorder),
-                  );
-                }}
-              />
-            </div>
-          )}
+        <div className={"window-action-button" + " " + styles.mobile}>
+          <IconButton
+            icon={<ReturnIcon />}
+            bordered
+            title={Locale.Chat.Actions.ChatList}
+            onClick={() => navigate(Path.Home)}
+          />
         </div>
 
-        <PromptToast
-          showToast={!hitBottom}
-          showModal={showPromptModal}
-          setShowModal={setShowPromptModal}
-        />
+        <Input
+          //autoHeight={true}
+          contentEditable={true}
+          readOnly={true}
+          value={"余额：" + paccount}
+          rows={1}
+          onClickCapture={loadPaccount}
+        ></Input>
+
+        <NavBar />
       </div>
 
       <div
@@ -1024,6 +1060,7 @@ export function Chat() {
         <SetAPIModal
           onClose={() => {
             setUserAPI(false);
+            loadPaccount();
           }}
         />
       )}
@@ -1031,6 +1068,8 @@ export function Chat() {
       {showExport && (
         <ExportMessageModal onClose={() => setShowExport(false)} />
       )}
+
+      {!isMobileScreen && showFooter && <Footer />}
     </div>
   );
 }
