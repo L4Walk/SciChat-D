@@ -255,7 +255,7 @@ export function Recharge() {
         style={currentStep.value !== "setPrice" ? { display: "none" } : {}}
       >
         <List>
-          <ListItem title={"选择金额"} subTitle={"200p=1元"}>
+          <ListItem title={"选择金额"} subTitle={""}>
             <IconButton
               icon={<RmbIcon />}
               text={"5元"}
