@@ -17,6 +17,7 @@ RUN apk update && apk add --no-cache git
 
 ENV OPENAI_API_KEY=""
 ENV CODE=""
+Env BASE_URL="https://openai.api2d.net"
 
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
@@ -32,6 +33,7 @@ RUN apk add proxychains-ng
 ENV PROXY_URL=""
 ENV OPENAI_API_KEY=""
 ENV CODE=""
+Env BASE_URL="https://openai.api2d.net"
 
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/standalone ./
