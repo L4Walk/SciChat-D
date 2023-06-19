@@ -49,5 +49,8 @@ docker ps
 docker stop container id
 
 docker run -d -p 3000:3000 -e BASE_URL=https://openai.api2d.net l4walk/scichat-d:[tag]
+
+例子：
+docker run -d -p 3000:3000 -e BASE_URL=https://openai.api2d.net l4walk/scichat-d:v0.0.2
 ```
 
