@@ -1,6 +1,6 @@
 
 function getHost(){
-	return 'http://47.113.149.222:8080';
+	return 'http://124.71.199.253:8080';
 }
 
 function getApiHost(){
